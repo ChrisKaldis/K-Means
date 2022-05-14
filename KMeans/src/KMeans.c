@@ -18,6 +18,7 @@ void printArray( double array[SIZE][LENGTH] );
 void printClass( char array[SIZE][NAME] );
 void printMeans( double array[CENTERS][LENGTH] );
 int initialCenters( double means[CENTERS][LENGTH], char class[SIZE][NAME], double data[SIZE][LENGTH] );
+void error( double means[CENTERS][LENGTH], double data[SIZE][LENGTH] );
 
 int main(void) {
 
@@ -30,6 +31,7 @@ int main(void) {
 	printMeans(means);
 	KMeans(patterns, means, SIZE);
 	printMeans(means);
+	error(means, patterns);
 
 	return EXIT_SUCCESS;
 }
@@ -104,6 +106,43 @@ void printMeans( double array[CENTERS][LENGTH] ) {
 		putchar('\n');
 	}
 	putchar('\n');
+
+	return ;
+}
+
+// naive way
+void error( double means[CENTERS][LENGTH], double data[SIZE][LENGTH] ) {
+
+	double distances[SIZE][CENTERS];
+
+	for ( int i = 0; i < SIZE; i++ ) {
+		for ( int j = 0; j < CENTERS; j++ ) {
+			distances[i][j] = distEucl( data[i], means[j] );
+		}
+	}
+
+	double min;
+	int class;
+	int errorC = 0;
+	for ( int i = 0; i < SIZE; i++ ) {
+		min = distances[i][0];
+		class = 1;
+		for ( int j = 1; j < CENTERS; j++ ) {
+			if ( min > distances[i][j] ) {
+				min = distances[i][j];
+				class = j+1;
+			}
+		}
+		// class 1 is from 0 to 49
+		if ( (i < 50) && (class != 1) )
+			errorC += 1;
+		// class 2 is from 50 to 99
+		else if ( (i > 49) && (i < 100) && (class != 2) )
+			errorC += 1;
+		else if ( (i > 100) && (class != 3) )
+			errorC += 1;
+	}
+	printf("Wrong classifications: %d\nTotal patterns: 149 (%f)", errorC, errorC/(float) SIZE);
 
 	return ;
 }
