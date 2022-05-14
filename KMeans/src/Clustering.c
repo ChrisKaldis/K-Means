@@ -18,39 +18,37 @@ void KMeans( double patterns[][LENGTH], double c[CENTERS][LENGTH], int numP ) {
         d[i] = (double *)malloc(CENTERS*sizeof(double));
     int *a = (int *)malloc(numP*sizeof(int));
 
-    double oldSSE ;
-    double tmpSSE ;
+    double oldSSE;
+    double tmpSSE;
     double SSE = INFINITY;
 
     do {
 
         tmpSSE = 0;
         oldSSE = SSE;
-        //assignment step
-        int i, j, k;
         // #pragma omp parallel for private(j) num_threads(threads)
-        for ( i = 0; i < numP; i++ ) {
-            for ( j = 0; j < CENTERS; j++ )
+        for ( int i = 0; i < numP; i++ ) {
+            for ( int j = 0; j < CENTERS; j++ )
               d[i][j] = distEucl( patterns[i], c[j] );
             a[i] = argMin( d[i] ) ;
         }
-
-        //update step
+        //
         double y[CENTERS][LENGTH];
         double z[CENTERS][LENGTH];
         initialTmpArray(y,z);
-        for ( i = 0; i < numP; i++ ) {
+        //update step
+        for ( int i = 0; i < numP; i++ ) {
             int index = a[i];
-            for ( k = 0; k < LENGTH; k++ ) {
+            for ( int k = 0; k < LENGTH; k++ ) {
                 y[index][k] += patterns[i][k];
                 z[index][k] += 1.0;
             }
             tmpSSE += distEucl( patterns[i], c[a[i]] );
         }
-        for ( j = 0; j < CENTERS; j++ ) {
-            for ( k = 0; k < LENGTH; k++ ) {
+        for ( int j = 0; j < CENTERS; j++ ) {
+            for ( int k = 0; k < LENGTH; k++ ) {
                 z[j][k] = fmax(z[j][k],1.0);
-                c[j][k] = y[j][k]/z[j][k] ;
+                c[j][k] = y[j][k]/z[j][k];
             }
         }
         SSE = tmpSSE;
@@ -65,7 +63,7 @@ void KMeans( double patterns[][LENGTH], double c[CENTERS][LENGTH], int numP ) {
     return ;
 }
 
-// Argmin
+// Argminimum
 int argMin( double d[CENTERS] ) {
 
     int index = 0;
@@ -92,10 +90,11 @@ double distEucl( double x[LENGTH], double c[LENGTH] ) {
     return ( pow(distance, 0.5) );
 }
 
+// Fill two arrays with 0.0, they used for recalculated the means.
 void initialTmpArray( double y[CENTERS][LENGTH], double z[CENTERS][LENGTH] ) {
 
-	for (int j = 0; j < CENTERS; j++ ) {
-		for (int k = 0; k < LENGTH; k++) {
+	for ( int j = 0; j < CENTERS; j++ ) {
+		for ( int k = 0; k < LENGTH; k++ ) {
 			y[j][k] = 0.0;
 			z[j][k] = 0.0;
 		}

@@ -13,14 +13,7 @@
 
 #include "Clustering.h"
 
-void readFile( char *filename, double data[SIZE][LENGTH], char class[SIZE][NAME] );
-void printArray( double array[SIZE][LENGTH] );
-void printClass( char array[SIZE][NAME] );
-void printMeans( double array[CENTERS][LENGTH] );
-int initialCenters( double means[CENTERS][LENGTH], char class[SIZE][NAME], double data[SIZE][LENGTH] );
-void error( double means[CENTERS][LENGTH], double data[SIZE][LENGTH] );
-
-int main(void) {
+int main( void ) {
 
 	double patterns[SIZE][LENGTH];
 	char class[SIZE][NAME];
@@ -40,7 +33,7 @@ int main(void) {
 void readFile( char *filename, double data[SIZE][LENGTH], char class[SIZE][NAME] ) {
 
     FILE *fp;
-    fp = fopen( filename, "r" );
+    fp = fopen(filename, "r");
     if (fp) {
         for ( size_t i = 0; i < SIZE; i++ ) {
             for ( size_t j = 0; j < LENGTH; j++ )
@@ -121,18 +114,10 @@ void error( double means[CENTERS][LENGTH], double data[SIZE][LENGTH] ) {
 		}
 	}
 
-	double min;
 	int class;
 	int errorC = 0;
 	for ( int i = 0; i < SIZE; i++ ) {
-		min = distances[i][0];
-		class = 1;
-		for ( int j = 1; j < CENTERS; j++ ) {
-			if ( min > distances[i][j] ) {
-				min = distances[i][j];
-				class = j+1;
-			}
-		}
+		class = argMin(distances[i]) + 1;
 		// class 1 is from 0 to 49
 		if ( (i < 50) && (class != 1) )
 			errorC += 1;
