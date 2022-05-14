@@ -18,5 +18,6 @@ void KMeans( double patterns[][LENGTH], double centers[CENTERS][LENGTH], int num
 
 double distEucl( double x[LENGTH], double c[LENGTH] );
 int argMin( double[CENTERS] );
+void initialTmpArray( double y[CENTERS][LENGTH], double z[CENTERS][LENGTH] );
 
 #endif /* CLUSTERING_H_ */

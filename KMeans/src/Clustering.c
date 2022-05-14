@@ -38,12 +38,7 @@ void KMeans( double patterns[][LENGTH], double c[CENTERS][LENGTH], int numP ) {
         //update step
         double y[CENTERS][LENGTH];
         double z[CENTERS][LENGTH];
-        for ( j = 0; j < CENTERS; j++ ) {
-            for (k = 0; k < LENGTH; k++) {
-                y[j][k] = 0.0;
-                z[j][k] = 0.0;
-            }
-        }
+        initialTmpArray(y,z);
         for ( i = 0; i < numP; i++ ) {
             int index = a[i];
             for ( k = 0; k < LENGTH; k++ ) {
@@ -97,3 +92,14 @@ double distEucl( double x[LENGTH], double c[LENGTH] ) {
     return ( pow(distance, 0.5) );
 }
 
+void initialTmpArray( double y[CENTERS][LENGTH], double z[CENTERS][LENGTH] ) {
+
+	for (int j = 0; j < CENTERS; j++ ) {
+		for (int k = 0; k < LENGTH; k++) {
+			y[j][k] = 0.0;
+			z[j][k] = 0.0;
+		}
+	}
+
+	return ;
+}
