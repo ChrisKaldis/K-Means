@@ -11,6 +11,13 @@
 #include "Clustering.h"
 
 //Lloyd's algorithm K-means
+/*
+ * Input:
+ * 		patterns:	2D array with the data
+ * 		c:		  	initial patterns used as centers
+ * 		numP:	  	number of patterns used
+ *
+ */
 void KMeans( double patterns[][LENGTH], double c[CENTERS][LENGTH], int numP ) {
 
     double **d = (double **)malloc(numP*sizeof(double*));
@@ -101,4 +108,18 @@ void initialTmpArray( double y[CENTERS][LENGTH], double z[CENTERS][LENGTH] ) {
 	}
 
 	return ;
+}
+
+int classifyPattern( double pattern[LENGTH], double c[CENTERS][LENGTH] ) {
+
+	int class;
+	double distances[CENTERS];
+
+	for ( int i = 0; i < CENTERS; i++ ) {
+		distances[i] = distEucl( pattern, c[i] );
+	}
+
+	class = argMin( distances ) + 1;
+
+	return class;
 }
