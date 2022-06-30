@@ -98,19 +98,6 @@ int argMin( double d[CENTERS] ) {
     return index;
 }
 
-// Fill two arrays with 0.0, they used for recalculated the means.
-void initialTmpArray( double y[CENTERS][LENGTH], double z[CENTERS][LENGTH] ) {
-
-	for ( int j = 0; j < CENTERS; j++ ) {
-		for ( int k = 0; k < LENGTH; k++ ) {
-			y[j][k] = 0.0;
-			z[j][k] = 0.0;
-		}
-	}
-
-	return ;
-}
-
 int classifyPattern( double pattern[LENGTH], double c[CENTERS][LENGTH] ) {
 
 	int class;
